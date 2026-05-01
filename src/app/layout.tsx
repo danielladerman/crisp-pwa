@@ -42,7 +42,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon-192.png" />
       </head>
       <body className="min-h-dvh flex flex-col bg-paper text-ink antialiased">
-        <main className="flex-1 pb-20">{children}</main>
+        <main className="flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))]">{children}</main>
         <BottomNav />
         <RegisterSW />
       </body>

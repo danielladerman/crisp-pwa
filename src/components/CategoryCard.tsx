@@ -8,6 +8,7 @@ const borderColorMap: Record<CategoryId, string> = {
   articulation: "border-l-cat-articulation",
   communication: "border-l-cat-communication",
   voice: "border-l-cat-voice",
+  writing: "border-l-cat-writing",
 };
 
 export function CategoryCard({

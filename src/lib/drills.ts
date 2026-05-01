@@ -5,7 +5,8 @@ export type CategoryId =
   | "emotional-precision"
   | "articulation"
   | "communication"
-  | "voice";
+  | "voice"
+  | "writing";
 
 export type Difficulty = "foundational" | "intermediate" | "advanced";
 
@@ -26,6 +27,9 @@ export interface Drill {
   theWhy: string;
   theDrill: string;
   variations: string[];
+  // When true, the drill saves a Seed (long-form writing) in addition to
+  // the practice log. Used by writing-category drills.
+  producesSeed?: boolean;
 }
 
 export const CATEGORIES: Category[] = [
@@ -36,6 +40,7 @@ export const CATEGORIES: Category[] = [
   { id: "articulation", name: "Articulation", subtitle: "Finding the exact right words", color: "cat-articulation" },
   { id: "communication", name: "Communication", subtitle: "Landing your message with any audience", color: "cat-communication" },
   { id: "voice", name: "Voice", subtitle: "Speaking as yourself, not a performance", color: "cat-voice" },
+  { id: "writing", name: "Writing", subtitle: "Thinking on paper, sharpening into essays", color: "cat-writing" },
 ];
 
 export const DRILLS: Drill[] = [
@@ -527,6 +532,113 @@ export const DRILLS: Drill[] = [
       "Use this before every important email: write the mPFC version first, then edit for context \u2014 but do not edit out the core truth.",
       "After a conversation, evaluate: what percentage of what I said came from the mPFC anchors vs. the Monitor? Track this over time.",
     ],
+  },
+
+  // ── WRITING (7 drills) ────────────────────────────────
+  {
+    id: "swap-test",
+    name: "The Swap Test",
+    category: "writing",
+    difficulty: "foundational",
+    duration: 300,
+    science: "Dan Koe's Swap Test, derived from analysis of post-AI creative work: if creator and creation can be swapped without losing value, the work is replaceable by AI. The moat is the creator's lived perspective, energy signature, sensemaking, and life trajectory.",
+    theWhy: "Most writing dies because it could have been written by anyone. The Swap Test forces you to identify what makes a piece irreducibly yours — the angle only you can take. If nothing comes up, kill the idea before you waste an essay on it.",
+    theDrill: "Pick one thing you made or wrote recently. Write it at the top of the seed. Below, answer: \"What's irreplaceable about this — what would be lost if someone else made it?\" Be specific. Name the lived experience, the wound, the obsession, or the data point only you have. If you can't name anything irreducible, write \"kill\" at the end and move on.",
+    variations: [
+      "Run the Swap Test on a piece of content you're about to publish. If it passes, ship. If it fails, rewrite the angle.",
+      "Apply to a business idea instead of writing — what part of this venture relies on YOU specifically?",
+    ],
+    producesSeed: true,
+  },
+  {
+    id: "generation-sprint",
+    name: "Generation Sprint",
+    category: "writing",
+    difficulty: "foundational",
+    duration: 600,
+    science: "Gendlin's focusing and Pennebaker's expressive writing both show that uncensored continuous output bypasses the dlPFC's evaluative loop, surfacing material the inner critic would have killed. Dan Koe's drafting principle: \"separate generation from evaluation\" — the same idea as the cognitive science.",
+    theWhy: "Your best ideas are below the surface, blocked by the inner editor. A timed sprint with no rules gives generation a clean room. You can edit later — you cannot generate later.",
+    theDrill: "Pick one idea, question, or feeling. Set a 10-minute timer. Write continuously. Do not stop, do not reread, do not edit, do not pause to find the right word. If you get stuck, write \"I don't know what to say next\" and keep going. When the timer ends, save the seed. Do not edit it for at least 24 hours.",
+    variations: [
+      "Start with a concrete sensation (\"the smell of my grandmother's apartment\") instead of an abstract idea.",
+      "Run two sprints back-to-back on the same topic — the second usually goes deeper.",
+    ],
+    producesSeed: true,
+  },
+  {
+    id: "anchor-it",
+    name: "Anchor-It",
+    category: "writing",
+    difficulty: "foundational",
+    duration: 180,
+    science: "Dan Koe's capture principle: every idea is bound to a pain point or benefit at the moment of capture, otherwise it floats free and gets discarded. This mirrors Implementation Intention research — anchoring an action to a specific cue dramatically increases follow-through.",
+    theWhy: "Most ideas die because they were never anchored to a reader. An idea that helps no one is a hobby. Anchoring forces you to specify who hurts without this idea, or who wins with it — the moment you can't, the idea isn't ready.",
+    theDrill: "Capture one idea you've been carrying — a sentence, a phrase, an observation. Write it at the top. Below it, answer two questions: \"What pain does this remove?\" AND \"What benefit does this unlock?\" Be specific about the person and the situation. If both answers are vague, the idea isn't ready — note that and let it cook.",
+    variations: [
+      "Anchor 5 ideas in 15 minutes — speed forces clarity.",
+      "Pull one idea from a previous Generation Sprint seed and anchor it.",
+    ],
+    producesSeed: true,
+  },
+  {
+    id: "quadrant-audit",
+    name: "Quadrant Audit",
+    category: "writing",
+    difficulty: "intermediate",
+    duration: 420,
+    science: "Dan Koe's adaptation of integral theory's four quadrants — Individual Inner (psychology), Collective Inner (culture), Individual Outer (behavior), Collective Outer (systems). Examining a belief through all four prevents reductionistic single-lens analysis.",
+    theWhy: "Most takes fail because they're written from one quadrant. Writing about \"productivity\" only from the psychology angle ignores the culture that shaped it, the behaviors that produce it, and the systems that reward it. The audit forces a complete take.",
+    theDrill: "Pick a belief you hold or are interrogating. Write it at the top. Then write 1–2 sentences in each of four sections: Psychology (what's happening inside one person), Culture (what beliefs and norms shape this), Behavior (what observable actions show up), Systems (what structures reinforce or fight it). Where do they contradict? Where do they reinforce? The contradictions are the essay.",
+    variations: [
+      "Audit a belief you held 3 years ago that you've since changed — what shifted in which quadrant?",
+      "Audit a current debate (AI, work, health) — write one section per quadrant, then identify which quadrant most takes ignore.",
+    ],
+    producesSeed: true,
+  },
+  {
+    id: "atomic-essay",
+    name: "Atomic Essay",
+    category: "writing",
+    difficulty: "intermediate",
+    duration: 600,
+    science: "David Perell's Atomic Essay format and Koe's BLUF-style writing principles converge on a constraint: one claim, ~280 words, forced clarity. The constraint is the feature — bounded space surfaces the load-bearing sentence.",
+    theWhy: "Long essays let you hide. A 280-word ceiling forces you to commit to one claim and defend it with structure, not volume. This is the unit of practice that compounds into real essays.",
+    theDrill: "State ONE claim in the first sentence. (\"X causes Y.\" Or \"Most people get Z wrong.\") Write 200–280 words developing it. End with a one-sentence pass: \"Do I actually believe this?\" If yes, save as seed. If no, rewrite the opening claim and run again. Cap word count — quality emerges from the constraint.",
+    variations: [
+      "Pick a claim from your Generation Sprint seeds and condense it into atomic form.",
+      "Atomic Essay against your own previous take — disagree with yourself in 280 words.",
+    ],
+    producesSeed: true,
+  },
+  {
+    id: "read-to-notice",
+    name: "Read-to-Notice",
+    category: "writing",
+    difficulty: "foundational",
+    duration: 300,
+    science: "Koe's slow-reading practice: read until a sentence stops you, then put the book down. This is reading for stimulus, not completion — designed to trigger the brain's default mode network and surface the reader's own latent thoughts, not the author's.",
+    theWhy: "The reader who finishes the chapter learned the author's argument. The reader who stopped at one sentence and sat with it learned something about themselves. The latter is where original ideas come from.",
+    theDrill: "Open a book, essay, or article. Read slowly. The moment a sentence makes you stop and think — STOP. Do not finish the paragraph. Do not finish the page. Write that sentence down. Then, in one sentence, write WHY it stopped you. The why is the beginning of your next idea.",
+    variations: [
+      "After 5 sessions, review your stopping sentences. Themes will emerge — that's a topic you should be writing about.",
+      "Apply to a podcast or YouTube video — pause when you have a thought, write the moment that triggered it.",
+    ],
+    producesSeed: true,
+  },
+  {
+    id: "levels-check",
+    name: "Levels Check",
+    category: "writing",
+    difficulty: "intermediate",
+    duration: 300,
+    science: "Dan Koe's 5-Dimensional Thinking, Level dimension: Level 0 (instinctual) → 1 (conformist) → 2 (individualist) → 3 (synthesis, holds contradictions) → 4 (generative, creates originals). Most writing dies at Level 1 — repackaging others' frames without questioning them.",
+    theWhy: "Knowing where your thinking sits on a topic tells you whether to write yet. Level 1 thinking produces derivative content. Level 2+ produces takes worth shipping. Self-locating before drafting prevents wasted essays.",
+    theDrill: "Pick a topic you care about. Be honest: what level is your current thinking on it? Level 1 — repeating consensus / adopting others' frames? Level 2 — formed your own model? Level 3 — can hold contradictions, see your model as one of several? Level 4 — generating frames that don't yet exist? Write one paragraph naming your level and one specific move that would push you up one level (a book to read, a person to talk to, a position to steel-man).",
+    variations: [
+      "Run Levels Check on three topics — notice which are stuck at Level 1 and which are at Level 3+. Write from the higher ones.",
+      "Levels Check before each Atomic Essay — if you're at Level 1, the essay isn't ready yet.",
+    ],
+    producesSeed: true,
   },
 ];
 

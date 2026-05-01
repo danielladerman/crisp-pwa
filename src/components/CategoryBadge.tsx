@@ -8,6 +8,7 @@ const colorMap: Record<CategoryId, string> = {
   articulation: "bg-cat-articulation/15 text-cat-articulation",
   communication: "bg-cat-communication/15 text-cat-communication",
   voice: "bg-cat-voice/15 text-cat-voice",
+  writing: "bg-cat-writing/15 text-cat-writing",
 };
 
 export function CategoryBadge({ category }: { category: CategoryId }) {

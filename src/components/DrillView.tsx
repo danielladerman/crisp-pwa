@@ -23,20 +23,40 @@ export function DrillView({ drill }: { drill: Drill }) {
     try {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
+      let newSeedId: string | null = null;
 
       if (user) {
-        const { error } = await supabase.from("practice_logs").insert({
+        const text = noticed.trim();
+
+        const { error: logError } = await supabase.from("practice_logs").insert({
           user_id: user.id,
           drill_id: drill.id,
           drill_name: drill.name,
           category: drill.category,
-          noticed: noticed.trim() || null,
+          noticed: drill.producesSeed ? null : text || null,
         });
-        if (error) throw error;
+        if (logError) throw logError;
+
+        if (drill.producesSeed && text) {
+          const { data: seed, error: seedError } = await supabase
+            .from("seeds")
+            .insert({
+              user_id: user.id,
+              body: text,
+              source_drill_id: drill.id,
+              category: drill.category,
+              status: "seed",
+            })
+            .select("id")
+            .single();
+          if (seedError) throw seedError;
+          newSeedId = seed.id;
+        }
       }
 
       setPhase("saved");
-      setTimeout(() => router.push("/"), 600);
+      const dest = newSeedId ? `/seeds/${newSeedId}` : "/";
+      setTimeout(() => router.push(dest), 600);
     } catch {
       setSaving(false);
       setPhase("drill");
@@ -108,30 +128,34 @@ export function DrillView({ drill }: { drill: Drill }) {
             onClick={() => setPhase("logging")}
             className="w-full rounded-xl bg-sky py-3.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
           >
-            I Did It &rarr; Log
+            I Did It &rarr; {drill.producesSeed ? "Write" : "Log"}
           </button>
         )}
 
         {phase === "logging" && (
           <div className="space-y-3">
             <label className="block text-sm font-medium text-ink">
-              What did you notice?
+              {drill.producesSeed ? "Write your seed" : "What did you notice?"}
             </label>
             <textarea
               value={noticed}
               onChange={(e) => setNoticed(e.target.value)}
-              placeholder="One sentence about what you observed..."
+              placeholder={
+                drill.producesSeed
+                  ? "Generate freely — no editing, no plan. You can come back to it."
+                  : "One sentence about what you observed..."
+              }
               autoFocus
-              rows={2}
-              className="w-full rounded-xl border border-paper-deep bg-paper-dim px-4 py-3 text-sm text-ink placeholder:text-ink-ghost outline-none focus:border-sky focus:ring-1 focus:ring-sky resize-none transition-colors"
+              rows={drill.producesSeed ? 14 : 2}
+              className="w-full rounded-xl border border-paper-deep bg-paper-dim px-4 py-3 text-sm text-ink placeholder:text-ink-ghost outline-none focus:border-sky focus:ring-1 focus:ring-sky resize-none transition-colors leading-relaxed"
             />
             <button
               type="button"
               onClick={handleSave}
-              disabled={saving}
+              disabled={saving || (drill.producesSeed && !noticed.trim())}
               className="w-full rounded-xl bg-sky py-3.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
             >
-              {saving ? "Saving..." : "Save"}
+              {saving ? "Saving..." : drill.producesSeed ? "Save Seed" : "Save"}
             </button>
           </div>
         )}

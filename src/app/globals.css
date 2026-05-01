@@ -17,6 +17,7 @@
   --cat-articulation: #059669;
   --cat-communication: #D97706;
   --cat-voice: #DC2626;
+  --cat-writing: #0891B2;
 }
 
 @theme inline {
@@ -36,6 +37,7 @@
   --color-cat-articulation: var(--cat-articulation);
   --color-cat-communication: var(--cat-communication);
   --color-cat-voice: var(--cat-voice);
+  --color-cat-writing: var(--cat-writing);
   --font-sans: var(--font-geist-sans);
 }
 
